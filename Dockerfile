@@ -1,6 +1,6 @@
 FROM openjdk:8-jdk
 
-MAINTAINER Carlos Sanchez <carlos@apache.org>
+LABEL maintainer="Even Holthe <even.holthe@me.com>"
 
 ENV JENKINS_SWARM_VERSION 3.15
 ENV HOME /home/jenkins-slave
