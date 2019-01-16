@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ -e /var/run/docker.sock ]; then
+  echo "/var/run/docker.sock exists, changing owenership to jenkins-slave"
+  sudo chown jenkins-slave:jenkins-slave /var/run/docker.sock
+fi
+
 # if `docker run` first argument start with `-` the user is passing jenkins swarm launcher arguments
 if [[ $# -lt 1 ]] || [[ "$1" == "-"* ]]; then
 
