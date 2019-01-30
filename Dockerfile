@@ -7,7 +7,11 @@ ENV HOME /home/jenkins-slave
 
 # install netstat to allow connection health check with
 # netstat -tan | grep ESTABLISHED
-RUN apt-get update && apt-get install -y net-tools sudo && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends \
+		net-tools \
+		sudo \
+		make \
+	&& rm -rf /var/lib/apt/lists/*
 
 # Add user with sudo
 RUN adduser --disabled-password --gecos '' jenkins-slave
