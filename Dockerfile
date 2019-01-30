@@ -5,13 +5,21 @@ LABEL maintainer="Even Holthe <even.holthe@me.com>"
 ENV JENKINS_SWARM_VERSION 3.15
 ENV HOME /home/jenkins-slave
 
-# install netstat to allow connection health check with
-# netstat -tan | grep ESTABLISHED
+# Install pre-requisites (sudo, make, docker)
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		net-tools \
 		sudo \
 		make \
-	&& rm -rf /var/lib/apt/lists/*
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg2 \
+    software-properties-common \
+  && curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add - \
+  && add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" \
+  && apt-get update \
+  && apt-get install docker-ce -y --no-install-recommends \
+  && rm -rf /var/lib/apt/lists/*
 
 # Add user with sudo
 RUN adduser --disabled-password --gecos '' jenkins-slave
