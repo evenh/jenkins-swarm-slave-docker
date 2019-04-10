@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk
+FROM openjdk:8u212-jdk
 
 LABEL maintainer="Even Holthe <even.holthe@me.com>"
 
