@@ -8,9 +8,9 @@ ENV HOME /home/jenkins-slave
 
 # Install pre-requisites (sudo, make, docker)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-		net-tools \
-		sudo \
-		make \
+    net-tools \
+    sudo \
+    make \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -23,6 +23,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && apt-get install docker-ce -y --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
 
+# Install Jenkins Swarm
+RUN curl --create-dirs -sSLo /usr/share/jenkins/swarm-client-$JENKINS_SWARM_VERSION.jar https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/$JENKINS_SWARM_VERSION/swarm-client-$JENKINS_SWARM_VERSION.jar \
+  && chmod 755 /usr/share/jenkins
+
 # Install octo cli
 RUN mkdir /octo \
   && curl -sSLo /tmp/octo-cli.tar.gz https://download.octopusdeploy.com/octopus-tools/$OCTO_CLI_VERSION/OctopusTools.$OCTO_CLI_VERSION.debian.8-x64.tar.gz \
@@ -31,12 +35,9 @@ RUN mkdir /octo \
   && rm /tmp/octo-cli.tar.gz
 
 # Add user with sudo
-RUN adduser --disabled-password --gecos '' jenkins-slave
-RUN adduser jenkins-slave sudo
-RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-
-RUN curl --create-dirs -sSLo /usr/share/jenkins/swarm-client-$JENKINS_SWARM_VERSION.jar https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/$JENKINS_SWARM_VERSION/swarm-client-$JENKINS_SWARM_VERSION.jar \
-  && chmod 755 /usr/share/jenkins
+RUN adduser --disabled-password --gecos '' jenkins-slave \
+  && adduser jenkins-slave sudo \
+  && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 COPY jenkins-slave.sh /usr/local/bin/jenkins-slave.sh
 
