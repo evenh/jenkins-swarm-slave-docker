@@ -2,7 +2,7 @@ FROM openjdk:8u212-jdk
 
 LABEL maintainer="Even Holthe <even.holthe@me.com>"
 
-ENV JENKINS_SWARM_VERSION 3.15
+ENV JENKINS_SWARM_VERSION 3.16
 ENV OCTO_CLI_VERSION=6.2.3
 ENV HOME /home/jenkins-slave
 
